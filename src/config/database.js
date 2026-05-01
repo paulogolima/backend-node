@@ -1,4 +1,5 @@
 import Sequelize from "sequelize"
+
 import { User } from "../models/Users.js"
 
 const connection = new Sequelize({
