@@ -1,6 +1,7 @@
 import 'dotenv/config'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
+
 import { User } from "../models/Users.js"
 
 class UserService {
@@ -69,7 +70,7 @@ class UserService {
 
                 const token = jwt.sign(
                     {id: user.id, email: user.email},
-                    process.env.SECRET_KEY,
+                    process.env.JWT_SECRET_KEY,
                     {expiresIn: "24h"}
                 )
 
