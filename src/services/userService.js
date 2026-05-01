@@ -29,7 +29,7 @@ class UserService {
         return {
             success: true,
             msg: "Usuário registrado com sucesso!",
-            obj:{
+            user:{
                 id: obj.id,
                 nome: obj.nome,
                 email: obj.email,
@@ -89,22 +89,53 @@ class UserService {
                     msg: `Erro no servidor: ${err.message}`
                 }
             }
-    
     }
 
     static async update(req,res) {
-        const {id} = req.params
-        const {nome, email, senha, cargo} = req.body
+        try{
+            const {id} = req.params
+            const {nome, email, senha, cargo} = req.body
+    
+            var obj = await User.findOne({where: {id: id}})
 
-        // Criptografar novamente a senha após atualizar user
+            if(!obj) {
+                return {
+                    success: false,
+                    msg: "Usuário não encontrado"
+                }
+            }
+            
+            if(senha) {
+                const salt = 12
+                const senhaNova = await bcrypt.hash(senha,salt)
+                obj.senha = senhaNova
+            }
 
-        var obj = await User.findOne({where: {id: id}})
+            if(nome) obj.nome = nome
+            if(email) obj.email = email 
+            if(cargo) obj.cargo = cargo 
 
-        Object.assign(obj, {nome, email, senha, cargo})
-        obj = await obj.save()
+            obj = await obj.save()
 
-        return obj
+            return {
+                success: true,
+                msg: "Usuário atualizado com sucesso!",
+                user:{
+                    id: obj.id,
+                    nome: obj.nome,
+                    email: obj.email,
+                    cargo: obj.cargo
+                }
+            }
+        }catch(err) {
+            return {
+                success: false,
+                msg: `Erro ao atualizar usuário.\nerro: ${err.message}`            
+
+            }
+        }
     }
+
 
     static async delete(req,res) {
         const {id} = req.params
