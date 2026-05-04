@@ -3,6 +3,7 @@ import 'dotenv/config'
 import jwt from 'jsonwebtoken'
 
 // Middleware para verificar se o usuário está autenticado (possui token JWT válido)
+// Valida o token e extrai os dados do usuário
 export const authMiddleware = (req, res, next) => {
     try{
         // Extrai o token do header Authorization (formato: "Bearer <token>")
@@ -32,6 +33,7 @@ export const authMiddleware = (req, res, next) => {
 }
 
 // Middleware para verificar se o usuário é administrador
+// Valida se o usuário está autenticado E possui cargo de admin
 export const adminMiddleware = (req, res, next) => {
     try{
         // Valida se o usuário está autenticado
@@ -53,7 +55,7 @@ export const adminMiddleware = (req, res, next) => {
     }catch(err) {
         // Caso haja erro ao verificar permissão
         return res.status(403).json({
-            sucess: false,
+            success: false,
             msg: "Falha ao verificar permissão."
         })
     } 
