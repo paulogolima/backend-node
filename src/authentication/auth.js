@@ -1,1 +1,0 @@
-// Fazer autenticação para verificar token e admin
