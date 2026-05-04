@@ -5,16 +5,16 @@ import express from "express"
 import { UserController } from "../controllers/userController.js"
 import { authMiddleware, adminMiddleware } from "../middlewares/auth.js"
 
-// Cria uma instância de router do Express
-const router = express.Router()
+// Cria uma instância de router do Express para rotas de usuários
+const userRoutes = express.Router()
 
 // Rotas sem autenticação
-router.post('/register/user', UserController.create)
-router.post('/login/user', UserController.login)
+userRoutes.post('/register/user', UserController.create)
+userRoutes.post('/login/user', UserController.login)
 
 // Rotas com autenticação
-router.put('/user/:id',authMiddleware, UserController.update)
-router.delete('/user/:id', authMiddleware, UserController.delete)
-router.get('/users/listar', authMiddleware, adminMiddleware, UserController.findAll)
+userRoutes.put('/user/:id',authMiddleware, UserController.update)
+userRoutes.delete('/user/:id', authMiddleware, UserController.delete)
+userRoutes.get('/users/listar', authMiddleware, adminMiddleware, UserController.findAll)
 
-export default router
+export { userRoutes }
