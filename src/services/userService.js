@@ -6,6 +6,8 @@ import bcrypt from 'bcrypt'
 // Importações internas
 import { User } from "../models/Users.js"
 
+// Classe de serviço para gerenciar lógica de negócio relacionada a usuários
+// Responsável por: autenticação, CRUD de usuários, geração de tokens JWT
 class UserService {
 
     // Método para buscar todos os usuários do banco de dados
@@ -165,15 +167,24 @@ class UserService {
     static async delete(req,res) {
         const {id} = req.params
 
+        // Busca o usuário pelo ID
         var obj = await User.findByPk(id)
 
-        // Preciso reorganizar o nº de id do banco sempre qu deletar algum user
+        // Valida se o usuário existe
+        if(!obj) {
+            return {
+                success: false,
+                msg: "Usuário não encontrado"
+            }
+        }
 
+        // Deleta o usuário do banco de dados
         obj = await obj.destroy()
+        
         return {
              success: true,
             msg: "Usuário deletado com sucesso!",
-            obj:{
+            user:{
                 id: obj.id,
                 nome: obj.nome,
                 email: obj.email,
