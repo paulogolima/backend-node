@@ -3,7 +3,7 @@ import { Model, DataTypes } from 'sequelize'
 
 class User extends Model {
 
-    // Método para definir associações entre modelos (não utilizado neste projeto)
+    // Método para definir associações entre modelos 
     static associate(models) {
         //  Associação entre models aqui
     }
